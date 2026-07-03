@@ -1,0 +1,11 @@
+--- Core Scientific & Plotting ---
+
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+
+--- PyTorch Engine  ---
+
+torch>=2.0.0
+geomloss>=0.2.6
+pykeops>=2.2.3      # Highly recommended by GeomLoss for GPU acceleration
