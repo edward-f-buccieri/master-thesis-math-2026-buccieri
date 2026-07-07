@@ -35,7 +35,7 @@ iterations = 120000     # Total number of SGD steps
 batch_size = 200         # Mini-batch size for SGD
 lambda_v = 1e-5         # L2 regularization coefficient
 lr = 2.0                # Learning rate
-save_interval = iterations // 80  # Save history periodically for the animation (80 frames)
+save_interval = iterations // 60  # Save history periodically for the animation (60 frames)
 
 # Training Set
 x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
