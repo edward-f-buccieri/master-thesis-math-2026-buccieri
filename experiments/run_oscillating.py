@@ -22,7 +22,7 @@ if torch.cuda.is_available():
 # Oscillating target function
 def target_func(x):
     signal = torch.sin(2 * torch.pi * x) + 0.5 * torch.cos(6 * torch.pi * x)
-    return signal / 1.5
+    return signal
 
 # ReLU network
 def network_forward(x, mu):
@@ -32,16 +32,16 @@ def network_forward(x, mu):
     return (w * torch.relu(x @ theta + b)).mean(dim=1, keepdim=True)
 
 # Hyperparameters
-num_particles = 4000  # Total number of neurons / particles
-jko_steps = 300        # Number of JKO iterations
+num_particles = 2000  # Total number of neurons / particles
+jko_steps = 800        # Number of JKO iterations
 inner_iters = 120      # Number of optimizer iterations inside each JKO step
-tau = 0.8          # JKO time step
-blur_eps = 0.005       # Sinkhorn blur parameter
+tau = 0.8        # JKO time step
+blur_eps = 0.05       # Sinkhorn blur parameter
 lambda_v = 1e-3       # L2 regularization coefficient
-lr_inner = 0.02        # Inner optimizer learning rate
+lr_inner = 0.05        # Inner optimizer learning rate
 
 # Training set
-x_train = torch.linspace(-1, 1, 400).view(-1, 1).to(device)
+x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
 y_train = target_func(x_train)
 
 # Particle initialization on the sphere in R^3
@@ -119,10 +119,6 @@ titles = ["Initialization", f"{jko_steps // 2} JKO steps", f"{jko_steps} JKO ste
 fig = plt.figure(figsize=(20, 11))
 fig.suptitle(r"ReLU network - Target: Oscillating Function", fontsize=16, y=0.95)
 
-# Pre-calculate global limits across all saved timesteps
-global_lim = max([np.max(np.abs(pts)) for pts in history_mu.values()])
-lim = global_lim * 1.05  # 5% padding for rendering borders safely
-
 global_w_min = min([np.min(pts[:, 0]) for pts in history_mu.values()])
 global_w_max = max([np.max(pts[:, 0]) for pts in history_mu.values()])
 
@@ -141,8 +137,8 @@ for idx, step in enumerate(step_keys):
     pts = history_mu[step]
 
     sc = ax_3d.scatter(
-        pts[:, 1], 
-        pts[:, 2], 
+        pts[:, 1],
+        pts[:, 2],
         pts[:, 0],
         c=pts[:, 0],
         cmap="magma",
@@ -156,43 +152,15 @@ for idx, step in enumerate(step_keys):
     ax_3d.set_ylabel(r"$b$", labelpad=8)
     ax_3d.set_zlabel(r"$w$", labelpad=8)
 
-    ax_3d.set_xlim([-lim, lim])
-    ax_3d.set_ylim([-lim, lim])
-    ax_3d.set_zlim([-lim, lim])
+    ax_3d.set_xlim([-3, 3])
+    ax_3d.set_ylim([-3, 3])
+    ax_3d.set_zlim([-3, 3])
     ax_3d.view_init(elev=25, azim=-60)
 
     fig.colorbar(sc, ax=ax_3d, shrink=0.7, pad=0.05, label="w")
 
-    # Focus on the initial sphere (upper-left area of the first 3D plot)
-    if idx == 0:
-        ax_inset = fig.add_axes([0.04, 0.32, 0.09, 0.14], projection='3d')
-
-        ax_inset.scatter(
-            pts[:, 1],
-            pts[:, 2],
-            pts[:, 0],
-            c=pts[:, 0],
-            cmap="magma",
-            s=4,        
-            alpha=0.5,
-            vmin=global_w_min,
-            vmax=global_w_max
-        )
-
-        inset_lim = 1.2
-        ax_inset.set_xlim([-inset_lim, inset_lim])
-        ax_inset.set_ylim([-inset_lim, inset_lim])
-        ax_inset.set_zlim([-inset_lim, inset_lim])
-        ax_inset.view_init(elev=25, azim=-60)
-
-        ax_inset.set_title("Zoom (R=1)", fontsize=9, pad=2, weight='bold')
-        ax_inset.set_xticks([-1, 0, 1])
-        ax_inset.set_yticks([-1, 0, 1])
-        ax_inset.set_zticks([-1, 0, 1])
-        ax_inset.tick_params(labelsize=7, pad=0)
-        
 plt.subplots_adjust(left=0.05, right=0.95, bottom=0.05, top=0.88, wspace=0.25, hspace=0.28)
 
 # Save and show the figures
-plt.savefig("jko_sinkhorn_osc_fixed.png", dpi=300, bbox_inches="tight", pad_inches=0.35)
+plt.savefig("jko_sinkhorn_osc.png", dpi=300, bbox_inches="tight", pad_inches=0.35)
 plt.show()
