@@ -135,7 +135,7 @@ for idx, step in enumerate(step_keys):
         pts[:, 2],
         pts[:, 0],
         c=pts[:, 0],
-        cmap="magma",
+        cmap="viridis",
         s=10,
         alpha=0.6,
     )
