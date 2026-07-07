@@ -8,22 +8,60 @@ Official repository containing the source code and numerical experiments for my 
 
 ## 🎥 Simulations
 
-| Wasserstein Gradient Flow (JKO) | Particle Gradient Flow (SGD) |
-|:---:|:---:|
-| <img src="animations/jko_evolution_abs.gif" width="500"/> | <img src="animations/sgd_evolution_abs.gif" width="500"/> |
-| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=\vert x \vert$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
-| <img src="animations/jko_evolution_quad.gif" width="500"/> | <img src="animations/sgd_evolution_quad.gif" width="500"/> |
-| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=x^2$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
-| <img src="animations/jko_evolution_noisy.gif" width="500"/> | <img src="animations/sgd_evolution_noisy.gif" width="500"/> |
-| *Evolution of the Wasserstein gradient flow approximating a noisy target function* $y(x)=x^2 + 0.05 \cdot Z$ *, where* $Z\sim\mathcal{N}(0,1)$ | *Evolution of the Particle gradient flow (SGD) for the same noisy target function* |
+The following animations demonstrate the evolution of a ReLU network's parameters during training. We compare the **Wasserstein Gradient Flow** (approximated via the JKO scheme) with the **Particle Gradient Flow** (approximated via Full-Batch SGD).
 
-### Transport dynamics with two neurons
+---
+
+### 1. Absolute Value Approximation: $y(x)=\vert x \vert$
+
+**Wasserstein Gradient Flow (JKO)**
 <p align="center">
-  <img src="animations/jko_evolution_two_neurons.gif" width="800"/>
-  <br>
-  <em>Evolution of a ReLU network with two neurons and of its parameters approximating the target function $y(x)=\max\{x-1,0\}$</em>
+  <img src="animations/jko_evolution_abs.gif" width="80%"/>
 </p>
 
+**Particle Gradient Flow (SGD)**
+<p align="center">
+  <img src="animations/sgd_evolution_abs.gif" width="80%"/>
+</p>
+
+---
+
+### 2. Quadratic Function Approximation: $y(x)=x^2$
+
+**Wasserstein Gradient Flow (JKO)**
+<p align="center">
+  <img src="animations/jko_evolution_quad.gif" width="80%"/>
+</p>
+
+**Particle Gradient Flow (SGD)**
+<p align="center">
+  <img src="animations/sgd_evolution_quad.gif" width="80%"/>
+</p>
+
+---
+
+### 3. Approximation with Noisy Data: $y(x)=x^2 + 0.05 \cdot Z$
+
+**Wasserstein Gradient Flow (JKO)**
+<p align="center">
+  <img src="animations/jko_evolution_noisy.gif" width="80%"/>
+</p>
+
+**Particle Gradient Flow (SGD)**
+<p align="center">
+  <img src="animations/sgd_evolution_noisy.gif" width="80%"/>
+</p>
+
+---
+
+### 4. Transport Dynamics with Two Neurons
+*Evolution of a ReLU network with only two neurons to intuitively visualize the parameter dynamics approximating the target function $y(x)=\max\{x-1,0\}$.*
+
+<p align="center">
+  <img src="animations/jko_evolution_two_neurons.gif" width="80%"/>
+</p>
+
+---
 ## 🧠 Abstract
 The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
 
