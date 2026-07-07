@@ -10,11 +10,11 @@ Official repository containing the source code and numerical experiments for my 
 
 | Wasserstein Gradient Flow (JKO) | Particle Gradient Flow (SGD) |
 |:---:|:---:|
-| <img src="animations/jko_evolution_abs.gif" width="400"/> | <img src="animations/sgd_evolution_abs.gif" width="400"/> |
+| <img src="animations/jko_evolution_abs.gif" width="500"/> | <img src="animations/sgd_evolution_abs.gif" width="500"/> |
 | *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=\vert x \vert$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
-| <img src="animations/jko_evolution_quad.gif" width="400"/> | <img src="animations/sgd_evolution_quad.gif" width="400"/> |
+| <img src="animations/jko_evolution_quad.gif" width="500"/> | <img src="animations/sgd_evolution_quad.gif" width="500"/> |
 | *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=x^2$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
-| <img src="animations/jko_evolution_noisy.gif" width="400"/> | <img src="animations/sgd_evolution_noisy.gif" width="400"/> |
+| <img src="animations/jko_evolution_noisy.gif" width="500"/> | <img src="animations/sgd_evolution_noisy.gif" width="500"/> |
 | *Evolution of the Wasserstein gradient flow approximating a noisy target function* $y(x)=x^2 + 0.05 \cdot Z$ *, where* $Z\sim\mathcal{N}(0,1)$ | *Evolution of the Particle gradient flow (SGD) for the same noisy target function* |
 
 ### Transport dynamics with two neurons
