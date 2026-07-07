@@ -8,22 +8,21 @@ Official repository containing the source code and numerical experiments for my 
 
 ## 🎥 Simulations
 
-| Standard Approximation |
-|:----------------------:|
-| <img src="animations/jko_evolution_abs.gif" width="800"/> |
-| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=\vert x \vert$ |
-| <img src="animations/jko_evolution_quad.gif" width="800"/> |
-| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=x^2$ |
+| Wasserstein Gradient Flow (JKO) | Particle Gradient Flow (SGD) |
+|:---:|:---:|
+| <img src="animations/jko_evolution_abs.gif" width="400"/> | <img src="animations/sgd_evolution_abs.gif" width="400"/> |
+| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=\vert x \vert$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
+| <img src="animations/jko_evolution_quad.gif" width="400"/> | <img src="animations/sgd_evolution_quad.gif" width="400"/> |
+| *Evolution of the Wasserstein gradient flow for a ReLU network approximating the target function* $y(x)=x^2$ | *Evolution of the Particle gradient flow (SGD) for the same network and target function* |
+| <img src="animations/jko_evolution_noisy.gif" width="400"/> | <img src="animations/sgd_evolution_noisy.gif" width="400"/> |
+| *Evolution of the Wasserstein gradient flow approximating a noisy target function* $y(x)=x^2 + 0.05 \cdot Z$ *, where* $Z\sim\mathcal{N}(0,1)$ | *Evolution of the Particle gradient flow (SGD) for the same noisy target function* |
 
-| Approximation with noisy data |
-|:-----------------------------:|
-| <img src="animations/jko_evolution_noisy.gif" width="800"/> |
-| *Evolution of the Wasserstein gradient flow for a ReLU network approximating a noisy target function* $y(x)=x^2 + 0.05 \cdot Z$ *, where* $Z\sim\mathcal{N}(0,1)$ |
-
-| Transport dynamics with two neurons |
-|:-----------------------------------:|
-| <img src="animations/jko_evolution_two_neurons.gif" width="800"/> |
-| *Evolution of a ReLU network with two neurons and of its parameters approximating the target function* $y(x)=\max\{x-1,0\}$ |
+### Transport dynamics with two neurons
+<p align="center">
+  <img src="animations/jko_evolution_two_neurons.gif" width="800"/>
+  <br>
+  <em>Evolution of a ReLU network with two neurons and of its parameters approximating the target function $y(x)=\max\{x-1,0\}$</em>
+</p>
 
 ## 🧠 Abstract
 The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
