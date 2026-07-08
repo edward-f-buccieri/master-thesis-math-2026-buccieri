@@ -37,7 +37,7 @@ num_particles = 2000  # Total number of neurons / particles
 iterations = 200000     # Total number of SGD steps
 batch_size = 200       # Mini-batch size for SGD
 lambda_v = 1e-5       # L2 regularization coefficient
-lr = 2              # Learning rate
+lr = 6              # Learning rate
 
 
 # Training set
