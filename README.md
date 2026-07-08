@@ -76,7 +76,7 @@ The following animations show the evolution of a ReLU network's parameters durin
 
 ---
 ## 🧠 Abstract
-The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme and I compared it with the evolution following the Particle Gradient Flow, simulated using the Full Batch SGD. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
+The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme and I compared it with the evolution of the Particle Gradient Flow, simulated using the Full Batch SGD. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
 
 ## 📂 Repository Structure
 ```text
