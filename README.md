@@ -48,7 +48,7 @@ The following animations show the evolution of a ReLU network's parameters durin
 
 **Particle Gradient Flow (SGD)**
 <p align="center">
-  <img src="animations/sgd_evolution_noisy.gif" width="80%"/>
+  <img src="animations/sgd_evolution_osc.gif" width="80%"/>
 </p>
 
 ---
