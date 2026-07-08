@@ -116,7 +116,8 @@ ax_2d.legend(loc='upper right')
 # Support evolution in 3D
 ax_3d = fig.add_subplot(1, 2, 2, projection='3d')
 cmap = cm.get_cmap('magma')
-norm = plt.Normalize(vmin=-1.0, vmax=1.5)
+all_w = np.concatenate([h[:, 0] for h in history_mu])
+norm = plt.Normalize(vmin=all_w.min(), vmax=all_w.max())
 
 def update(frame):
     line_net.set_ydata(history_out[frame])
