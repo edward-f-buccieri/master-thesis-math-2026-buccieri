@@ -21,7 +21,7 @@ print(f"Running on: {device}")
 # Oscillating target function
 def target_func(x):
     signal = torch.sin(2 * torch.pi * x) + 0.5 * torch.cos(6 * torch.pi * x)
-    return signal / 1.5
+    return signal
 
 # ReLU network
 def network_forward(x, mu):
@@ -31,20 +31,21 @@ def network_forward(x, mu):
     return (w * torch.relu(x @ theta + b)).mean(dim=1, keepdim=True)    
 
 # Hyperparameters
-num_particles = 4000  # Total number of neurons / particles
-jko_steps = 300        # Number of JKO iterations
-inner_iters = 120      # Number of optimizer iterations inside each JKO step
-tau = 0.8          # JKO time step
-blur_eps = 0.005       # Sinkhorn blur parameter
-lambda_v = 1e-3       # L2 regularization coefficient
-lr_inner = 0.02        # Inner optimizer learning rate
+num_particles = 2000 # Total number of neurons / particles
+jko_steps = 150      # Number of JKO iterations
+inner_iters = 120     # Number of optimizer iterations inside each JKO step
+tau = 0.8              # JKO time step
+blur_eps = 0.05     # Sinkhorn blur parameter
+lambda_v = 1e-3      # L2 regularization coefficient
+lr_inner = 0.1       # Inner optimizer learning rate
+data_term_weight = 30.0 # Scale factor for the Loss
 
 # Training Set
-x_train = torch.linspace(-1, 1, 400).view(-1, 1).to(device)
+x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
 y_train = target_func(x_train).to(device)
 
 # Particle intialization on the sphere in 3D
-R = 1.0
+R = 25.0
 directions = torch.randn(num_particles, 3, device=device)
 directions = directions / directions.norm(dim=1, keepdim=True).clamp_min(1e-12)
 mu_0 = directions * R
@@ -77,7 +78,7 @@ for step in range(1, jko_steps + 1):
         output = network_forward(x_train, mu_k)
 
         # Energy functional: data loss plus L2 regularization (2-homogeneous)
-        loss_F = criterion(output, y_train) + (lambda_v / 2.0) * torch.mean(mu_k**2)
+        loss_F = (data_term_weight * criterion(output, y_train)) + (lambda_v / 2.0) * torch.mean(mu_k**2)
 
         # Sinkhorn approximation of the Wasserstein-2 transport term
         loss_W2 = sinkhorn_loss(mu_k, current_mu)
@@ -99,14 +100,7 @@ print("Optimization completed. Generating animations...")
 
 # Animation configuration
 fig = plt.figure(figsize=(14, 6), dpi=150)
-fig.suptitle(r"ReLU network - Target : Oscillating Function", fontsize=16)
-
-# Pre-calculate global limits across all saved timesteps
-global_lim = max([np.max(np.abs(pts)) for pts in history_mu.values()])
-lim = global_lim * 1.05  # 5% padding for rendering borders safely
-
-global_w_min = min([np.min(pts[:, 0]) for pts in history_mu.values()])
-global_w_max = max([np.max(pts[:, 0]) for pts in history_mu.values()])
+fig.suptitle(r"ReLU network - Target: Oscillating Function", fontsize=16)
 
 # Function approximation
 ax_2d = fig.add_subplot(1, 2, 1)
@@ -144,9 +138,9 @@ def update(frame):
     ax_3d.set_ylabel(r'$b$')
     ax_3d.set_zlabel(r'$w$')
 
-    ax_3d.set_xlim([-lim, lim])
-    ax_3d.set_ylim([-lim, lim])
-    ax_3d.set_zlim([-lim, lim])
+    ax_3d.set_xlim([-50, 50])
+    ax_3d.set_ylim([-50, 50])
+    ax_3d.set_zlim([-50, 50])
     ax_3d.set_title("Support Evolution")
 
     return line_net,
