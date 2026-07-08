@@ -33,12 +33,12 @@ def network_forward(x, mu):
 
 # Hyperparameters
 num_particles = 2000  # Total number of neurons / particles
-jko_steps = 800        # Number of JKO iterations
+jko_steps = 500        # Number of JKO iterations
 inner_iters = 120      # Number of optimizer iterations inside each JKO step
 tau = 0.8        # JKO time step
 blur_eps = 0.05       # Sinkhorn blur parameter
 lambda_v = 1e-3       # L2 regularization coefficient
-lr_inner = 0.05        # Inner optimizer learning rate
+lr_inner = 0.1       # Inner optimizer learning rate
 
 # Training set
 x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
