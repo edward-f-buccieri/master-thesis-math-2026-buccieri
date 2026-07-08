@@ -8,7 +8,7 @@ Official repository containing the source code and numerical experiments for my 
 
 ## 🎥 Simulations
 
-The following animations demonstrate the evolution of a ReLU network's parameters during training. We compare the **Wasserstein Gradient Flow** (approximated via the JKO scheme) with the **Particle Gradient Flow** (approximated via Full-Batch SGD).
+The following animations show the evolution of a ReLU network's parameters during training. I compare the **Wasserstein Gradient Flow** (approximated via the JKO scheme) with the **Particle Gradient Flow** (approximated via Full-Batch SGD).
 
 ---
 
@@ -39,8 +39,21 @@ The following animations demonstrate the evolution of a ReLU network's parameter
 </p>
 
 ---
+### 3. Oscillating Function Approximation: $y(x)=\sin(2\pi x)+\frac{1}{2}\cos(6\pi x)$
 
-### 3. Approximation with Noisy Data: $y(x)=x^2 + 0.05 \cdot Z$
+**Wasserstein Gradient Flow (JKO)**
+<p align="center">
+  <img src="animations/jko_evolution_osc" width="80%"/>
+</p>
+
+**Particle Gradient Flow (SGD)**
+<p align="center">
+  <img src="animations/sgd_evolution_noisy.gif" width="80%"/>
+</p>
+
+---
+
+### 4. Approximation with Noisy Data: $y(x)=x^2 + 0.05 \cdot Z$
 
 **Wasserstein Gradient Flow (JKO)**
 <p align="center">
@@ -54,7 +67,7 @@ The following animations demonstrate the evolution of a ReLU network's parameter
 
 ---
 
-### 4. Transport Dynamics with Two Neurons
+### 5. Transport Dynamics with Two Neurons
 *Evolution of a ReLU network with only two neurons to intuitively visualize the parameter dynamics approximating the target function $y(x)=\max\{x-1,0\}$.*
 
 <p align="center">
@@ -63,7 +76,7 @@ The following animations demonstrate the evolution of a ReLU network's parameter
 
 ---
 ## 🧠 Abstract
-The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
+The goal of my Master's thesis is to describe the training of shallow neural networks as a Wasserstein gradient flow. In the experiments, I chose different target functions to represent the dataset. Starting from an initial parameter distribution for the network, I simulated the time evolution of this distribution during training (i.e., the approximation of the target function) using the JKO scheme and I compared it with the evolution following the Particle Gradient Flow, simulated using the Full Batch SGD. This repository provides some simple examples of target functions, but the idea can be easily extended to more complex scenarios.
 
 ## 📂 Repository Structure
 ```text
