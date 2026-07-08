@@ -43,7 +43,7 @@ The following animations show the evolution of a ReLU network's parameters durin
 
 **Wasserstein Gradient Flow (JKO)**
 <p align="center">
-  <img src="animations/jko_evolution_osc" width="80%"/>
+  <img src="animations/jko_evolution_osc.gif" width="80%"/>
 </p>
 
 **Particle Gradient Flow (SGD)**
