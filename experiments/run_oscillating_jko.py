@@ -33,7 +33,7 @@ def network_forward(x, mu):
 
 # Hyperparameters
 num_particles = 2000  # Total number of neurons / particles
-jko_steps = 500        # Number of JKO iterations
+jko_steps = 150       # Number of JKO iterations
 inner_iters = 120      # Number of optimizer iterations inside each JKO step
 tau = 0.8        # JKO time step
 blur_eps = 0.05       # Sinkhorn blur parameter
@@ -45,7 +45,7 @@ x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
 y_train = target_func(x_train)
 
 # Particle initialization on the sphere in R^3
-R = 1.0
+R = 25.0
 directions = torch.randn(num_particles, 3, device=device)
 directions = directions / directions.norm(dim=1, keepdim=True).clamp_min(1e-12)
 mu_0 = R * directions
@@ -152,9 +152,9 @@ for idx, step in enumerate(step_keys):
     ax_3d.set_ylabel(r"$b$", labelpad=8)
     ax_3d.set_zlabel(r"$w$", labelpad=8)
 
-    ax_3d.set_xlim([-3, 3])
-    ax_3d.set_ylim([-3, 3])
-    ax_3d.set_zlim([-3, 3])
+    ax_3d.set_xlim([-50, 50])
+    ax_3d.set_ylim([-50, 50])
+    ax_3d.set_zlim([-50, 50])
     ax_3d.view_init(elev=25, azim=-60)
 
     fig.colorbar(sc, ax=ax_3d, shrink=0.7, pad=0.05, label="w")
