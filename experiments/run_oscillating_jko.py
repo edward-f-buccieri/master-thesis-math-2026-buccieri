@@ -39,6 +39,7 @@ tau = 0.8        # JKO time step
 blur_eps = 0.05       # Sinkhorn blur parameter
 lambda_v = 1e-3       # L2 regularization coefficient
 lr_inner = 0.1       # Inner optimizer learning rate
+data_term_weight = 30.0 # Scale factor for the Loss
 
 # Training set
 x_train = torch.linspace(-1, 1, 200).view(-1, 1).to(device)
@@ -81,7 +82,7 @@ for step in range(1, jko_steps + 1):
         output = network_forward(x_train, mu_k)
 
         # Energy functional: data loss plus L2 regularization (2-homogeneous)
-        loss_F = criterion(output, y_train) + (lambda_v / 2.0) * torch.mean(mu_k**2)
+        loss_F = (data_term_weight * criterion(output, y_train)) + (lambda_v / 2.0) * torch.mean(mu_k**2)
 
         # Sinkhorn approximation of the Wasserstein-2 transport term
         loss_W2 = sinkhorn_loss(mu_k, previous_mu)
