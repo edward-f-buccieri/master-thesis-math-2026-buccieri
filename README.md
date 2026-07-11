@@ -68,7 +68,7 @@ The following animations show the evolution of a ReLU network's parameters durin
 ---
 
 ### 5. Transport Dynamics with Two Neurons
-*Evolution of a ReLU network with only two neurons to intuitively visualize the parameter dynamics approximating the target function $y(x)=\max\{x-1,0\}$.*
+*Evolution of a ReLU network with only two neurons to intuitively visualize the parameter dynamics approximating the target function* $y(x)=\max\{x-1,0\}$.
 
 **Wasserstein Gradient Flow (JKO)**
 <p align="center">
