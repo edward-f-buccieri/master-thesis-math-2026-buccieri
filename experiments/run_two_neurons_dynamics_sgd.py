@@ -128,7 +128,7 @@ for idx, step in enumerate(step_keys):
 
     ax_func.set_title(titles[idx])
     ax_func.grid(True, alpha=0.3)
-    ax_func.legend(loc="upper left")
+    ax_func.legend(loc="lower left")
     ax_func.set_xlim([-40, 40])
     ax_func.set_ylim([y_min_global - padding, y_max_global + padding])
 
