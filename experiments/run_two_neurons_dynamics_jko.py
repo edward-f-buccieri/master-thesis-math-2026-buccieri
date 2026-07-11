@@ -24,7 +24,7 @@ def network_forward(x, mu):
 
 # Hyperparameters
 num_particles = 2   # Number of neurons
-jko_steps = 24     # Number of JKO iterations
+jko_steps = 48   # Number of JKO iterations
 inner_iters = 30   # Number of optimizer iterations inside each JKO step
 tau = 0.5           # JKO time step
 eps = 0.006     # Sinkhorn regularization parameter
@@ -35,9 +35,13 @@ lr_inner = 0.05     # Inner optimizer learning rate
 x_train = torch.linspace(-10, 10, 200).view(-1, 1).to(device)
 y_train = target_func(x_train).to(device)
 
+# Evaluation set
+x_eval = torch.linspace(-40, 40, 400).view(-1, 1).to(device)
+y_eval = target_func(x_eval).to(device)
+
 # Particle initialization
 mu_0 = torch.zeros([num_particles, 3], dtype=torch.float32, device=device)
-mu_0[0,:]=torch.tensor([2.2, -1.0, -1.5]).to(device)
+mu_0[0,:]=torch.tensor([1.2, -1.0, -1.5]).to(device)
 mu_0[1,:]=torch.tensor([-0.8, 1.0, -0.5]).to(device)
 
 # Loss functions
@@ -55,8 +59,8 @@ current_mu = mu_0.clone()
 # Save initial state
 with torch.no_grad():
     history_mu[0] = current_mu.cpu().numpy()
-    history_out[0] = network_forward(x_train, current_mu)[0].squeeze(1).cpu().numpy()
-    history_neurons[0] = network_forward(x_train, current_mu)[1].cpu().numpy()
+    history_out[0] = network_forward(x_eval, current_mu)[0].squeeze(1).cpu().numpy()
+    history_neurons[0] = network_forward(x_eval, current_mu)[1].cpu().numpy()
 
 for step in range(1, jko_steps + 1):
     previous_mu = current_mu.detach()
@@ -87,8 +91,8 @@ for step in range(1, jko_steps + 1):
         print(f"JKO step {step}/{jko_steps} completed. JKO objective: {jko_obj.item():.4f}")
         with torch.no_grad():
             history_mu[step] = current_mu.cpu().numpy()
-            history_out[step] = network_forward(x_train, current_mu)[0].squeeze(1).cpu().numpy()
-            history_neurons[step] = network_forward(x_train, current_mu)[1].cpu().numpy()
+            history_out[step] = network_forward(x_eval, current_mu)[0].squeeze(1).cpu().numpy()
+            history_neurons[step] = network_forward(x_eval, current_mu)[1].cpu().numpy()
 
 # Final empirical error
 with torch.no_grad():
@@ -98,14 +102,17 @@ with torch.no_grad():
 print(f"Final MSE: {final_mse:.6e}")
 
 # Visualization
-x_np = x_train.cpu().numpy().flatten()
-y_np = y_train.cpu().numpy().flatten()
+x_np = x_eval.cpu().numpy().flatten()
+y_np = y_eval.cpu().numpy().flatten()
 titles = ["Initialization", f"{jko_steps // 5} JKO steps", f"{jko_steps * 2 // 5} JKO steps", f"{jko_steps * 3 // 5} JKO steps", f"{jko_steps * 4 // 5} JKO steps", f"{jko_steps} JKO steps"]
 fig = plt.figure(figsize=(20, 11), constrained_layout=True)
 fig.suptitle(r"ReLU network - Target: ReLU$(x-1)$", fontsize=16)
 fig_2 = plt.figure(figsize=(20, 11), constrained_layout=True)
 fig_2.suptitle(r"ReLU network - Target: ReLU$(x-1)$", fontsize=16)
 cmap = cm.get_cmap('tab10') # Generate colors for the neurons
+y_min_global = min(y_np.min(), min(history_out[k].min() for k in step_keys))
+y_max_global = max(y_np.max(), max(history_out[k].max() for k in step_keys))
+padding = (y_max_global - y_min_global) * 0.1
 
 for idx, step in enumerate(step_keys):
     # Function approximation
@@ -122,7 +129,7 @@ for idx, step in enumerate(step_keys):
     ax_func.set_title(titles[idx])
     ax_func.grid(True, alpha=0.3)
     ax_func.legend(loc="lower left")
-    ax_func.set_ylim([-4, 4])
+    ax_func.set_ylim([y_min_global - padding, y_max_global + padding])
 
     # Particle distribution in 3D: (theta, b, w)
     ax_3d = fig_2.add_subplot(2, 3, idx + 1, projection="3d")
