@@ -28,7 +28,7 @@ def network_forward(x, mu):
 
 # Hyperparameters
 num_particles = 2 # Total number of neurons / particles
-jko_steps = 24    # Number of JKO iterations
+jko_steps = 48    # Number of JKO iterations
 inner_iters = 30  # Number of optimizer iterations inside each JKO step
 tau = 0.5         # JKO time step
 blur_eps = 0.006  # Sinkhorn blur parameter
@@ -39,9 +39,13 @@ lr_inner = 0.05   # Inner optimizer learning rate
 x_train = torch.linspace(-10, 10, 200).view(-1, 1).to(device)
 y_train = target_func(x_train).to(device)
 
+# Evaluation set
+x_eval = torch.linspace(-40, 40, 400).view(-1, 1).to(device)
+y_eval = target_func(x_eval).to(device)
+
 # Particle initialization
 mu_0 = torch.zeros([num_particles, 3], dtype=torch.float32, device=device)
-mu_0[0, :] = torch.tensor([2.2, -1.0, -1.5], device=device)
+mu_0[0, :] = torch.tensor([1.2, -1.0, -1.5], device=device)
 mu_0[1, :] = torch.tensor([-0.8, 1.0, -0.5], device=device)
 
 # Loss functions
@@ -57,7 +61,7 @@ current_mu = mu_0.clone()
 
 # Save initial state (\mu_0, \Phi_{\mu_0} and single neurons)
 with torch.no_grad():
-    net_out, neuron_out = network_forward(x_train, current_mu)
+    net_out, neuron_out = network_forward(x_eval, current_mu)
     history_mu.append(current_mu.cpu().numpy())
     history_out.append(net_out.squeeze(1).cpu().numpy())
     history_neurons.append(neuron_out.cpu().numpy())
@@ -83,7 +87,7 @@ for step in range(1, jko_steps + 1):
 
     print(f"Step {step}/{jko_steps} processed. JKO Obj: {jko_obj.item():.4f}")
     with torch.no_grad():
-        net_out, neuron_out = network_forward(x_train, current_mu)
+        net_out, neuron_out = network_forward(x_eval, current_mu)
         history_mu.append(current_mu.cpu().numpy())
         history_out.append(net_out.squeeze(1).cpu().numpy())
         history_neurons.append(neuron_out.cpu().numpy())
@@ -95,8 +99,8 @@ history_mu = np.asarray(history_mu)
 history_out = np.asarray(history_out)
 history_neurons = np.asarray(history_neurons)
 
-x_np = x_train.cpu().numpy().flatten()
-y_np = y_train.cpu().numpy().flatten()
+x_np = x_eval.cpu().numpy().flatten()
+y_np = y_eval.cpu().numpy().flatten()
 frames_count = len(history_mu)
 
 # Animation configuration
